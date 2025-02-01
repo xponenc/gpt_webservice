@@ -34,6 +34,15 @@ def create_fastapi_app():
     #     allow_origins=["*"],
     # )
 
+    # поддержка cors
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
     @app.post("/ask", tags=["Вопрос"])
     async def ask_gpt(question: Question):
         nonlocal REQUEST_COUNTER
@@ -43,7 +52,7 @@ def create_fastapi_app():
         answer = await generate_answer(query=question.text,  # запрос пользователя
                                        db_index=db_index,  # векторная база знаний
                                        )
-        return {'answer': answer}
+        return {'message': answer}
 
     @app.get("/counter", tags=["Счетчик запросов"])
     async def get_counter():
