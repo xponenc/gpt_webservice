@@ -43,6 +43,10 @@ def create_fastapi_app():
         allow_headers=["*"],
     )
 
+    @app.get("/", tags=["Индекс"])
+    async def index():
+        return {'message': "API GPT"}
+
     @app.post("/ask", tags=["Вопрос"])
     async def ask_gpt(question: Question):
         nonlocal REQUEST_COUNTER
